@@ -7,18 +7,22 @@ namespace Joeymckenzie\Bubblehearth;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use Joeymckenzie\Bubblehearth\Provider\OAuthProvider;
 
 /**
  * A top-level client for interacting with Blizzard Game Data APIs.
  */
 readonly class BubbleHearthClient
 {
+    private OAuthProvider $provider;
+
     /**
      * @param  string  $clientId registered client ID provided by Blizzard.
      * @param  string  $clientSecret registered client secret provided by Blizzard.
      */
     public function __construct(protected string $clientId, protected string $clientSecret)
     {
+        $this->provider = new OAuthProvider($this->clientId, $this->clientSecret);
     }
 
     /**
