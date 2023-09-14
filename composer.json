@@ -1,37 +1,38 @@
 {
-    "name": "joeymckenzie/bubblehearth",
-    "description": "Blizzard API bindings for PHP.",
-    "type": "library",
-    "require": {
-        "php": ">=8.2",
-        "guzzlehttp/guzzle": "^7.8"
-    },
-    "autoload": {
-        "psr-4": {
-            "Joeymckenzie\\Bubblehearth\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Joey McKenzie",
-            "email": "joey.mckenzie27@gmail.com"
-        }
-    ],
-    "require-dev": {
-        "pestphp/pest": "^2.18",
-        "phpstan/phpstan": "^1.10",
-        "laravel/pint": "^1.13"
-    },
-    "minimum-stability": "stable",
-    "scripts": {
-        "test": "./vendor/bin/pest",
-        "lint": "./vendor/bin/phpstan analyse src tests",
-        "fmt": "./vendor/bin/pint",
-        "prepare": "git config core.hookspath .githooks"
-    },
-    "config": {
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        }
+  "name": "joeymckenzie/bubblehearth",
+  "description": "Blizzard API bindings for PHP.",
+  "type": "library",
+  "require": {
+    "php": ">=8.2",
+    "guzzlehttp/guzzle": "^7.8",
+    "league/oauth2-client": "^2.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "Joeymckenzie\\Bubblehearth\\": "src/"
     }
+  },
+  "authors": [
+    {
+      "name": "Joey McKenzie",
+      "email": "joey.mckenzie27@gmail.com"
+    }
+  ],
+  "require-dev": {
+    "pestphp/pest": "^2.18",
+    "phpstan/phpstan": "^1.10",
+    "laravel/pint": "^1.13"
+  },
+  "minimum-stability": "stable",
+  "scripts": {
+    "test": "./vendor/bin/pest",
+    "lint": "./vendor/bin/phpstan analyse src tests",
+    "fmt": "./vendor/bin/pint",
+    "prepare": "git config core.hookspath .githooks"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  }
 }

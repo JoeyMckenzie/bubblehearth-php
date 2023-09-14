@@ -9,6 +9,10 @@
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <env name="CLIENT_ID" value="yourClientKey"/>
+        <env name="CLIENT_SECRET" value="yourClientSecret"/>
+    </php>
     <source>
         <include>
             <directory suffix=".php">./app</directory>

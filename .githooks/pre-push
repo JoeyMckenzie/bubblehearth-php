@@ -1,4 +1,4 @@
 #!/bin/bash
 
-composer test
-composer lint
+composer run test
+composer run lint

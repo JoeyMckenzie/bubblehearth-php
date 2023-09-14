@@ -1,24 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Joeymckenzie\Bubblehearth;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 
 /**
  * A top-level client for interacting with Blizzard Game Data APIs.
  */
 readonly class BubbleHearthClient
 {
+    /**
+     * @param  string  $clientId registered client ID provided by Blizzard.
+     * @param  string  $clientSecret registered client secret provided by Blizzard.
+     */
     public function __construct(protected string $clientId, protected string $clientSecret)
     {
     }
 
     /**
      * Runs a request for obtaining GitHub user data.
-     *
-     * @throws GuzzleException
      */
     public function run(): void
     {
@@ -36,9 +40,7 @@ readonly class BubbleHearthClient
 
         // Send an asynchronous request.
         $request = new Request('GET', 'http://httpbin.org');
-        $promise = $client->sendAsync($request)->then(function ($response) {
-            echo 'I completed! '.$response->getBody();
-        });
+        $promise = $client->sendAsync($request)->then(fn (Response $response) => $response->getBody());
         $promise->wait();
     }
 }
