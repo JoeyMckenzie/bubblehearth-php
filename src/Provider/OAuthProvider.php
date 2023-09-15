@@ -6,6 +6,7 @@ namespace Joeymckenzie\Bubblehearth\Provider;
 
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\GenericProvider;
+use League\OAuth2\Client\Token\AccessToken;
 
 /**
  * An OAuth provider for connecting to the Blizzard Battle.net authentication APIs.
@@ -86,6 +87,7 @@ final readonly class OAuthProvider
 
                 // Using the access token, we may look up details about the
                 // resource owner.
+                /** @var AccessToken $accessToken */
                 $resourceOwner = $provider->getResourceOwner($accessToken);
 
                 var_export($resourceOwner->toArray());

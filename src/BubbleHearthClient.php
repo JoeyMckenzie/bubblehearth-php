@@ -20,7 +20,7 @@ readonly class BubbleHearthClient
      * @param  string  $clientId registered client ID provided by Blizzard.
      * @param  string  $clientSecret registered client secret provided by Blizzard.
      */
-    public function __construct(protected string $clientId, protected string $clientSecret)
+    public function __construct(private string $clientId, private string $clientSecret)
     {
         $this->provider = new OAuthProvider($this->clientId, $this->clientSecret);
     }
@@ -30,6 +30,7 @@ readonly class BubbleHearthClient
      */
     public function run(): void
     {
+        $this->provider->getClient();
         $client = new Client();
         //$res = $client->request('GET', 'https://api.github.com/user', [
         //    'auth' => ['user', 'pass']
