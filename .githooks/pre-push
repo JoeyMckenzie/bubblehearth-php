@@ -2,3 +2,4 @@
 
 composer run test
 composer run lint
+composer run types
