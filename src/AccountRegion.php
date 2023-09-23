@@ -2,33 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Joeymckenzie\Bubblehearth;
+namespace Bubblehearth\Bubblehearth;
 
 /**
  * Represents regions associated to their corresponding API gateways.
  */
-enum AccountRegion implements AuthorizableEndpoint
+enum AccountRegion: string implements AuthorizableEndpoint
 {
     /**
      * Represents the China region and China API gateway.
      */
-    case CN;
+    case CN = 'cn';
     /**
      * Represents the United States region and Global API gateway.
      */
-    case US;
+    case US = 'us';
     /**
      * Represents the European Union region and Global API gateway.
      */
-    case EU;
+    case EU = 'eu';
     /**
      * Represents the Korean region and Global API gateway.
      */
-    case KR;
+    case KR = 'kr';
     /**
      * Represents the Taiwan States region and Global API gateway.
      */
-    case TW;
+    case TW = 'tw';
 
     /**
      * Retrieves the token endpoint mapping based on the target region.

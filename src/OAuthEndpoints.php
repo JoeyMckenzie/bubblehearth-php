@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Joeymckenzie\Bubblehearth;
+namespace Bubblehearth\Bubblehearth;
 
 final readonly class OAuthEndpoints
 {
