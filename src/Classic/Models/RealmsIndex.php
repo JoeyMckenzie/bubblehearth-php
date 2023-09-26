@@ -13,21 +13,13 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 final readonly class RealmsIndex
 {
     /**
-     * @var array<Realm> list of available realms and their metadata.
+     * @param  Links  $links top-level document link to follow for a selected realm ID.
+     * @param  array<Realm>  $realms list of available realms and their metadata.
      */
-    public array $realms;
-
-    /**
-     * @var Links top-level document link to follow for a selected realm ID.
-     */
-    #[SerializedName('_links')]
-    public Links $links;
-
     public function __construct(
-        Links $links,
-        array $realms
+        #[SerializedName('_links')]
+        public Links $links,
+        public array $realms
     ) {
-        $this->links = $links;
-        $this->realms = $realms;
     }
 }

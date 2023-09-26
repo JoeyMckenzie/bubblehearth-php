@@ -19,35 +19,17 @@ use Symfony\Component\Serializer\Serializer;
 final readonly class ClassicClient
 {
     /**
-     * @var Serializer global Symfony serializer configured for Bubblehearth.
+     * @param  Client  $http internal Guzzle client, configured for timeout and other defaults.
+     * @param  AccountRegion  $region configured account region.
+     * @param  AuthenticationContext  $authentication internally cached authentication context, allowing for token reuse and smart refreshing.
+     * @param  Serializer  $serializer global Symfony serializer configured for Bubblehearth.
      */
-    private Serializer $serializer;
-
-    /**
-     * @var AuthenticationContext internally cached authentication context, allowing for token reuse and smart refreshing.
-     */
-    private AuthenticationContext $authentication;
-
-    /**
-     * @var AccountRegion configured account region.
-     */
-    private AccountRegion $region;
-
-    /**
-     * @var Client the internal Guzzle client, configured for timeout and other defaults.
-     */
-    private Client $http;
-
     public function __construct(
-        Client $http,
-        AccountRegion $region,
-        AuthenticationContext $authentication,
-        Serializer $serializer)
+        private Client $http,
+        private AccountRegion $region,
+        private AuthenticationContext $authentication,
+        private Serializer $serializer)
     {
-        $this->http = $http;
-        $this->region = $region;
-        $this->authentication = $authentication;
-        $this->serializer = $serializer;
     }
 
     /**

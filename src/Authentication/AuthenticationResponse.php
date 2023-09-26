@@ -10,41 +10,18 @@ namespace Bubblehearth\Bubblehearth\Authentication;
 final readonly class AuthenticationResponse
 {
     /**
-     * @var string|null optional scope associated to the token, mainly used for user profile data.
+     * @param  string  $accessToken represents the access token used to authenticate against Blizzard APIs.
+     * @param  string  $tokenType OAuth-based token type, usually a bearer.
+     * @param  int  $expiresIn number of seconds until the token expires, usually defaulting to 1 day.
+     * @param  string  $sub subscriber of the authentication request, defaults to the client ID of the request.
+     * @param  string|null  $scope optional scope associated to the token, mainly used for user profile data.
      */
-    public ?string $scope;
-
-    /**
-     * @var string subscriber of the authentication request, defaults to the client ID of the request.
-     */
-    public string $sub;
-
-    /**
-     * @var int number of seconds until the token expires, usually defaulting to 1 day.
-     */
-    public int $expiresIn;
-
-    /**
-     * @var string OAuth-based token type, usually a bearer.
-     */
-    public string $tokenType;
-
-    /**
-     * @var string represents the access token used to authenticate against Blizzard APIs.
-     */
-    public string $accessToken;
-
     public function __construct(
-        string $accessToken,
-        string $tokenType,
-        int $expiresIn,
-        string $sub,
-        ?string $scope
+        public string $accessToken,
+        public string $tokenType,
+        public int $expiresIn,
+        public string $sub,
+        public ?string $scope
     ) {
-        $this->accessToken = $accessToken;
-        $this->tokenType = $tokenType;
-        $this->expiresIn = $expiresIn;
-        $this->sub = $sub;
-        $this->scope = $scope;
     }
 }

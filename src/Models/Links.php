@@ -13,13 +13,11 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 final readonly class Links
 {
     /**
-     * @var DocumentKey URL document key.
+     * @param  DocumentKey  $key URL document key.
      */
-    #[SerializedName('self')]
-    public DocumentKey $key;
-
-    public function __construct(DocumentKey $key)
+    public function __construct(
+        #[SerializedName('self')]
+        public DocumentKey $key)
     {
-        $this->key = $key;
     }
 }

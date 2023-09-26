@@ -10,12 +10,9 @@ namespace Bubblehearth\Bubblehearth\Models;
 final readonly class DocumentKey
 {
     /**
-     * @var string document key, URL.
+     * @param  string  $href document key, URL.
      */
-    public string $href;
-
-    public function __construct(string $href)
+    public function __construct(public string $href)
     {
-        $this->href = $href;
     }
 }
