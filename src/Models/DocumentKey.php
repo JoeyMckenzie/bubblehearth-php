@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bubblehearth\Bubblehearth\Models;
 
 /**
@@ -7,11 +9,13 @@ namespace Bubblehearth\Bubblehearth\Models;
  */
 final readonly class DocumentKey
 {
-    public function __construct(
-        /**
-         * @var string document key, URL.
-         */
-        public string $href
-    ) {
+    /**
+     * @var string document key, URL.
+     */
+    public string $href;
+
+    public function __construct(string $href)
+    {
+        $this->href = $href;
     }
 }

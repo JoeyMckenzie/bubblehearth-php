@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bubblehearth\Bubblehearth\Models;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -10,12 +12,14 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  */
 final readonly class Links
 {
-    public function __construct(
-        /**
-         * @var DocumentKey document key, URL.
-         */
-        #[SerializedName('self')]
-        public DocumentKey $key
-    ) {
+    /**
+     * @var DocumentKey URL document key.
+     */
+    #[SerializedName('self')]
+    public DocumentKey $key;
+
+    public function __construct(DocumentKey $key)
+    {
+        $this->key = $key;
     }
 }

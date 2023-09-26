@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bubblehearth\Bubblehearth;
 
 /** Localities and internationalize data used to query Blizzard, currently supporting:
