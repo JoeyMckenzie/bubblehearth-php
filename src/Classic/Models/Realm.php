@@ -6,6 +6,7 @@ namespace Bubblehearth\Bubblehearth\Classic\Models;
 
 use Bubblehearth\Bubblehearth\Models\DocumentKey;
 use Bubblehearth\Bubblehearth\Models\Links;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * Realm metadata for all available World of Warcraft Classic servers.
@@ -22,6 +23,7 @@ final readonly class Realm
     public function __construct(
         public int $id,
         public string $slug,
+        #[SerializedName('_links')]
         public ?Links $links,
         public ?DocumentKey $key,
         public string|RealmLocale $name)

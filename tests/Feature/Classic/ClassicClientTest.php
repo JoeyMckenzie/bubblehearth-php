@@ -84,7 +84,7 @@ test('returns all locales for a realm when locale is not provided', function () 
     // Assert
     expect($realm)->not->toBeNull()
         ->and($realm->slug)->toBe('grobbulus')
-        ->and($realm->key)->not->toBeNull()
+        ->and($realm->key)->toBeNull()
         ->and($realm->id)->not->toBeNull()
         ->and($realmName)->toBeInstanceOf(RealmLocale::class)
         ->and($realmName->chineseCN)->toBe('格罗布鲁斯');

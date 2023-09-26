@@ -26,29 +26,29 @@ final readonly class RealmLocale
      * @param  string  $chineseCN represents Simplified Chinese locale.
      */
     public function __construct(
-        #[SerializedName('zh_CN')]
-        public string $englishUS,
-        #[SerializedName('zh_TW')]
-        public string $englishGB,
-        #[SerializedName('ko_KR')]
-        public string $spanishMX,
-        #[SerializedName('ru_RU')]
-        public string $spanishES,
-        #[SerializedName('it_IT')]
-        public string $portuguese,
-        #[SerializedName('fr_FR')]
-        public string $german,
-        #[SerializedName('de_DE')]
-        public string $french,
-        #[SerializedName('pt_BR')]
-        public string $italian,
-        #[SerializedName('es_ES')]
-        public string $russian,
-        #[SerializedName('es_MX')]
-        public string $korean,
-        #[SerializedName('en_GB')]
-        public string $chineseTW,
         #[SerializedName('en_US')]
+        public string $englishUS,
+        #[SerializedName('en_GB')]
+        public string $englishGB,
+        #[SerializedName('es_MX')]
+        public string $spanishMX,
+        #[SerializedName('es_ES')]
+        public string $spanishES,
+        #[SerializedName('pt_BR')]
+        public string $portuguese,
+        #[SerializedName('de_DE')]
+        public string $german,
+        #[SerializedName('fr_FR')]
+        public string $french,
+        #[SerializedName('it_IT')]
+        public string $italian,
+        #[SerializedName('ru_RU')]
+        public string $russian,
+        #[SerializedName('ko_KR')]
+        public string $korean,
+        #[SerializedName('zh_TW')]
+        public string $chineseTW,
+        #[SerializedName('zh_CN')]
         public string $chineseCN,
     ) {
     }
