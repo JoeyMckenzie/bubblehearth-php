@@ -19,17 +19,35 @@ use Symfony\Component\Serializer\Serializer;
 final readonly class ClassicClient
 {
     /**
-     * @param  Client  $http internal Guzzle client, configured for timeout and other defaults.
-     * @param  AccountRegion  $region configured account region.
-     * @param  AuthenticationContext  $authentication internally cached authentication context, allowing for token reuse and smart refreshing.
-     * @param  Serializer  $serializer global Symfony serializer configured for Bubblehearth.
+     * @var Serializer global Symfony serializer configured for Bubblehearth.
      */
+    private Serializer $serializer;
+
+    /**
+     * @var AuthenticationContext internally cached authentication context, allowing for token reuse and smart refreshing.
+     */
+    private AuthenticationContext $authentication;
+
+    /**
+     * @var AccountRegion configured account region.
+     */
+    private AccountRegion $region;
+
+    /**
+     * @var Client internal Guzzle client, configured for timeout and other defaults.
+     */
+    private Client $http;
+
     public function __construct(
-        private Client $http,
-        private AccountRegion $region,
-        private AuthenticationContext $authentication,
-        private Serializer $serializer)
+        Client $http,
+        AccountRegion $region,
+        AuthenticationContext $authentication,
+        Serializer $serializer)
     {
+        $this->http = $http;
+        $this->region = $region;
+        $this->authentication = $authentication;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -66,6 +84,32 @@ final readonly class ClassicClient
      * @throws GuzzleException
      */
     public function getRealm(string $realmSlug, Locale $locale = null): Realm
+    {
+        $regionSubdomain = $this->region->value;
+        $url = "https://$regionSubdomain.api.blizzard.com/data/wow/realm/$realmSlug";
+
+        if (isset($locale)) {
+            $url = "$url?locale=$locale->value";
+        }
+
+        $token = $this->authentication->getAccessToken();
+        $headers = ['Authorization' => "Bearer $token", 'Battlenet-Namespace' => "dynamic-classic-$regionSubdomain"];
+        $response = $this->http->get($url, [
+            'headers' => $headers,
+        ]);
+
+        return $this->serializer->deserialize($response->getBody()->getContents(), Realm::class, 'json');
+    }
+
+    /**
+     * Retrieves a realm given the slugified version of the name.
+     *
+     * @param  string  $realmSlug realm slug based on the name.
+     * @param  Locale|null  $locale targeted locale.
+     *
+     * @throws GuzzleException
+     */
+    public function searchRealms(string $timezone, string $orderBy, int $offset): Realm
     {
         $regionSubdomain = $this->region->value;
         $url = "https://$regionSubdomain.api.blizzard.com/data/wow/realm/$realmSlug";

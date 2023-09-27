@@ -14,19 +14,49 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 final readonly class Realm
 {
     /**
-     * @param  int  $id realm ID.
-     * @param  string  $slug slugified realm name.
-     * @param  Links|null  $links top-level document link to follow of the selected realm ID.
-     * @param  DocumentKey|null  $key document key for the realm, defaults to the URL.
-     * @param  string|RealmLocale  $name localized realm name.
+     * @var string slugified realm name.
      */
+    public string $slug;
+
+    /**
+     * @var int realm ID.
+     */
+    public int $id;
+
+    /**
+     * @var Links|null top-level document link to follow of the selected realm ID
+     */
+    #[SerializedName('_links')]
+    public ?Links $links;
+
+    /**
+     * @var DocumentKey|null document key for the realm, defaults to the URL.
+     */
+    public ?DocumentKey $key;
+
+    /**
+     * @var string|RealmLocale localized realm name.
+     */
+    public string|RealmLocale $name;
+
+    /**
+     * @var RealmRegion|null realm region, including document links.
+     */
+    public ?RealmRegion $region;
+
     public function __construct(
-        public int $id,
-        public string $slug,
-        #[SerializedName('_links')]
-        public ?Links $links,
-        public ?DocumentKey $key,
-        public string|RealmLocale $name)
+        string $slug,
+        int $id,
+        ?Links $links,
+        ?DocumentKey $key,
+        string|RealmLocale $name,
+        ?RealmRegion $region)
     {
+        $this->slug = $slug;
+        $this->id = $id;
+        $this->links = $links;
+        $this->key = $key;
+        $this->name = $name;
+        $this->region = $region;
     }
 }

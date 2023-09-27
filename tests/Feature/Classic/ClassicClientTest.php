@@ -21,7 +21,9 @@ test('returns a list of realms from the index endpoint', function () {
     // Assert
     expect($realms)
         ->not->toBeNull()
-        ->and($realms->realms)->not->toBeEmpty();
+        ->and($realms->realms)->not->toBeEmpty()
+        ->and($realms->realms[0]->name)->toBeInstanceOf(RealmLocale::class)
+        ->and($realms->realms[0]->region)->toBeNull();
 });
 
 test('returns a single locale for realms when locale is provided', function () {
@@ -37,7 +39,8 @@ test('returns a single locale for realms when locale is provided', function () {
     expect($realms)
         ->not->toBeNull()
         ->and($realms->realms)->not->toBeEmpty()
-        ->and($realms->realms[0]->name)->toBeString();
+        ->and($realms->realms[0]->name)->toBeString()
+        ->and($realms->realms[0]->region)->toBeNull();
 });
 
 test('returns a all locales for realms when locale is not provided', function () {
@@ -53,7 +56,7 @@ test('returns a all locales for realms when locale is not provided', function ()
     expect($realms)
         ->not->toBeNull()
         ->and($realms->realms)->not->toBeEmpty()
-        ->and($realms->realms[0]->name)->toBeObject();
+        ->and($realms->realms[0]->name)->toBeInstanceOf(RealmLocale::class);
 });
 
 test('returns a single locale for a realm when locale is provided', function () {
@@ -66,8 +69,12 @@ test('returns a single locale for a realm when locale is provided', function () 
     $realm = $client->classic->getRealm('grobbulus', Locale::EnglishUS);
 
     // Assert
-    expect($realm)
-        ->not->toBeNull();
+    expect($realm)->not->toBeNull()
+        ->and($realm->slug)->toBe('grobbulus')
+        ->and($realm->key)->toBeNull()
+        ->and($realm->id)->not->toBeNull()
+        ->and($realm->region)->not->toBeNull()
+        ->and($realm->name)->toBeString();
 });
 
 test('returns all locales for a realm when locale is not provided', function () {
@@ -87,5 +94,7 @@ test('returns all locales for a realm when locale is not provided', function () 
         ->and($realm->key)->toBeNull()
         ->and($realm->id)->not->toBeNull()
         ->and($realmName)->toBeInstanceOf(RealmLocale::class)
-        ->and($realmName->chineseCN)->toBe('格罗布鲁斯');
+        ->and($realmName->chineseCN)->toBe('格罗布鲁斯')
+        ->and($realm->region)->not->toBeNull()
+        ->and($realm->region?->name)->not->toBeNull();
 });

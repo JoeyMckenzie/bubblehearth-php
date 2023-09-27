@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Bubblehearth\Bubblehearth;
 
+use Bubblehearth\Bubblehearth\Authentication\AuthorizableEndpoint;
+use Bubblehearth\Bubblehearth\Authentication\OAuthEndpoints;
+
 /**
  * Represents regions associated to their corresponding API gateways.
  */

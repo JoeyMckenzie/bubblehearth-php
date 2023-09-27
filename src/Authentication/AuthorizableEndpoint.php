@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bubblehearth\Bubblehearth;
+namespace Bubblehearth\Bubblehearth\Authentication;
 
 /**
  * A structure that may contain an authoriablble endpoint mapping, primarily used for tokens and user info.
