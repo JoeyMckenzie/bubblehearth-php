@@ -40,9 +40,9 @@ final readonly class Realm
     public string $name;
 
     /**
-     * @var RealmRegion realm region, including document links.
+     * @var RealmRegion|null realm region, including document links.
      */
-    public string $region;
+    public ?RealmRegion $region;
 
     /**
      * @var bool|null optional flag representing if the realm is a PVP tournament realm.
@@ -60,7 +60,8 @@ final readonly class Realm
         ?Links $links,
         ?DocumentKey $key,
         string $name,
-        string $region)
+        ?RealmRegion $region,
+        ?bool $isTournament)
     {
         $this->slug = $slug;
         $this->id = $id;
@@ -68,5 +69,6 @@ final readonly class Realm
         $this->key = $key;
         $this->name = $name;
         $this->region = $region;
+        $this->isTournament = $isTournament;
     }
 }
