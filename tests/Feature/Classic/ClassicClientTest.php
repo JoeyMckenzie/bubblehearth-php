@@ -7,85 +7,82 @@ namespace Feature;
 use Bubblehearth\Bubblehearth\AccountRegion;
 use Bubblehearth\Bubblehearth\BubbleHearthClient;
 use Bubblehearth\Bubblehearth\Locale;
-use Bubblehearth\Bubblehearth\LocalizedItem;
 
-test('returns a list of realms from the index endpoint', function () {
-    // Arrange
-    $clientId = (string) getenv('CLIENT_ID');
-    $clientSecret = (string) getenv('CLIENT_SECRET');
-    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
+describe('realms', function () {
+    test('returns a list of realms from the index endpoint', function () {
+        // Arrange
+        $clientId = (string) getenv('CLIENT_ID');
+        $clientSecret = (string) getenv('CLIENT_SECRET');
+        $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
 
-    // Act
-    $realms = $client->classic->realms->getRealmIndex();
+        // Act
+        $realms = $client
+            ->classic()
+            ->realms()
+            ->getRealmIndex();
 
-    // Assert
-    expect($realms)
-        ->not->toBeNull()
-        ->and($realms->realms)->not->toBeEmpty()
-        ->and($realms->realms[0]->name)->toBeInstanceOf(LocalizedItem::class)
-        ->and($realms->realms[0]->region)->toBeNull();
-});
+        // Assert
+        expect($realms)
+            ->not->toBeNull()
+            ->and($realms->realms)->not->toBeEmpty()
+            ->and($realms->realms[0]->name)->not()->toBeNull()
+            ->and($realms->realms[0]->region)->toBeNull();
+    });
 
-test('returns a single locale for realms when locale is provided', function () {
-    // Arrange
-    $clientId = (string) getenv('CLIENT_ID');
-    $clientSecret = (string) getenv('CLIENT_SECRET');
-    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
+    test('returns a single locale for realms when locale is provided', function () {
+        // Arrange
+        $clientId = (string) getenv('CLIENT_ID');
+        $clientSecret = (string) getenv('CLIENT_SECRET');
+        $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
 
-    // Act
-    $realms = $client->classic->realms->getRealmIndex();
+        // Act
+        $realms = $client
+            ->classic()
+            ->realms()
+            ->getRealmIndex();
 
-    // Assert
-    expect($realms)
-        ->not->toBeNull()
-        ->and($realms->realms)->not->toBeEmpty()
-        ->and($realms->realms[0]->name)->toBeString()
-        ->and($realms->realms[0]->region)->toBeNull();
-});
+        // Assert
+        expect($realms)
+            ->not->toBeNull()
+            ->and($realms->realms)->not->toBeEmpty()
+            ->and($realms->realms[0]->name)->toBeString()
+            ->and($realms->realms[0]->region)->toBeNull();
+    });
 
-test('returns a all locales for realms when locale is not provided', function () {
-    // Arrange
-    $clientId = (string) getenv('CLIENT_ID');
-    $clientSecret = (string) getenv('CLIENT_SECRET');
-    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
+    test('returns a single locale for a realm when locale is provided', function () {
+        // Arrange
+        $clientId = (string) getenv('CLIENT_ID');
+        $clientSecret = (string) getenv('CLIENT_SECRET');
+        $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
 
-    // Act
-    $realms = $client->classic->realms->getRealmIndex();
+        // Act
+        $realm = $client
+            ->classic()
+            ->realms()
+            ->getRealm('grobbulus');
 
-    // Assert
-    expect($realms)
-        ->not->toBeNull()
-        ->and($realms->realms)->not->toBeEmpty()
-        ->and($realms->realms[0]->name)->toBeInstanceOf(LocalizedItem::class);
-});
+        // Assert
+        expect($realm)->not->toBeNull()
+            ->and($realm->slug)->toBe('grobbulus')
+            ->and($realm->key)->toBeNull()
+            ->and($realm->id)->not->toBeNull()
+            ->and($realm->region)->not->toBeNull()
+            ->and($realm->name)->toBeString();
+    });
 
-test('returns a single locale for a realm when locale is provided', function () {
-    // Arrange
-    $clientId = (string) getenv('CLIENT_ID');
-    $clientSecret = (string) getenv('CLIENT_SECRET');
-    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
+    test('returns paginated results for a realm search', function () {
+        // Arrange
+        $clientId = (string) getenv('CLIENT_ID');
+        $clientSecret = (string) getenv('CLIENT_SECRET');
+        $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
 
-    // Act
-    $realm = $client->classic->realms->getRealm('grobbulus');
+        // Act
+        $realms = $client
+            ->classic()
+            ->realms()
+            ->searchRealms();
 
-    // Assert
-    expect($realm)->not->toBeNull()
-        ->and($realm->slug)->toBe('grobbulus')
-        ->and($realm->key)->toBeNull()
-        ->and($realm->id)->not->toBeNull()
-        ->and($realm->region)->not->toBeNull()
-        ->and($realm->name)->toBeString();
-});
-
-test('returns paginated results for a realm search', function () {
-    // Arrange
-    $clientId = (string) getenv('CLIENT_ID');
-    $clientSecret = (string) getenv('CLIENT_SECRET');
-    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
-
-    // Act
-    $realms = $client->classic->realms->searchRealms();
-
-    // Assert
-    expect($realms)->not->toBeNull();
+        // Assert
+        expect($realms)->not->toBeNull();
+    });
 });

@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 final readonly class RealmsIndex
 {
     /**
-     * @var array<Realm> list of available realms and their metadata.
+     * @var Realm[] list of available realms and their metadata.
      */
     public array $realms;
 

@@ -70,7 +70,9 @@ final readonly class RealmClient
             'query' => ['locale' => $this->locale->value],
         ]);
 
-        return $this->serializer->deserialize($response->getBody()->getContents(), RealmsIndex::class, 'json');
+        $contents = $response->getBody()->getContents();
+
+        return $this->serializer->deserialize($contents, RealmsIndex::class, 'json');
     }
 
     /**
@@ -123,10 +125,8 @@ final readonly class RealmClient
 
         $response = $this->http->get($url, [
             'headers' => $headers,
-            // 'query' => $queryParams,
+            'query' => $queryParams,
         ]);
-
-        $body = $response->getBody()->getContents();
 
         return $this->serializer->deserialize($response->getBody()->getContents(), SearchResults::class, 'json');
     }

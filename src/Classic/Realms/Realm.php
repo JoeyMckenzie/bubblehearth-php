@@ -55,10 +55,10 @@ final readonly class Realm
     public ?string $timezone;
 
     public function __construct(
+        ?DocumentKey $key,
+        ?Links $links,
         string $slug,
         int $id,
-        ?Links $links,
-        ?DocumentKey $key,
         string $name,
         ?RealmRegion $region,
         ?bool $isTournament)

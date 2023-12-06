@@ -19,7 +19,7 @@ final readonly class ClassicClient
     /**
      * @var RealmClient client connector for realm data.
      */
-    public RealmClient $realms;
+    private RealmClient $realms;
 
     public function __construct(
         Client $http,
@@ -29,5 +29,10 @@ final readonly class ClassicClient
         Serializer $serializer)
     {
         $this->realms = new RealmClient($http, $region, $locale, $authentication, $serializer);
+    }
+
+    public function realms(): RealmClient
+    {
+        return $this->realms;
     }
 }

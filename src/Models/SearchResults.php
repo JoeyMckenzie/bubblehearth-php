@@ -17,33 +17,33 @@ final readonly class SearchResults
     public int $page;
 
     /**
-     * @var int count of the current page's result.
+     * @var int|null count of the current page's result.
      */
-    public int $pageSize;
+    public ?int $pageSize;
 
     /**
-     * @var int max page count limit;
+     * @var int|null max page count limit;
      */
-    public int $maxPageSize;
+    public ?int $maxPageSize;
 
     /**
-     * @var int total number of pages of search results.
+     * @var int|null total number of pages of search results.
      */
-    public int $pageCount;
+    public ?int $pageCount;
 
     /**
-     * @var array<SearchResultItem<T>> search results generic over a type.
+     * @var SearchResultItem<T>[] search results generic over a type.
      */
     public array $results;
 
     /**
-     * @param  array<SearchResultItem<T>>  $results
+     * @param  SearchResultItem<T>[]  $results
      */
     public function __construct(
         int $page,
-        int $pageSize,
-        int $maxPageSize,
-        int $pageCount,
+        ?int $pageSize,
+        ?int $maxPageSize,
+        ?int $pageCount,
         array $results)
     {
         $this->page = $page;
