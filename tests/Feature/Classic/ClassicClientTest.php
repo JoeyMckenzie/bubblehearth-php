@@ -66,7 +66,7 @@ test('returns a single locale for a realm when locale is provided', function () 
     $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
 
     // Act
-    $realm = $client->classic->realms->getRealm('grobbulus', Locale::EnglishUS);
+    $realm = $client->classic->realms->getRealm('grobbulus');
 
     // Assert
     expect($realm)->not->toBeNull()

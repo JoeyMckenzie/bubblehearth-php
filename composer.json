@@ -2,8 +2,11 @@
   "name": "bubblehearth/bubblehearth",
   "description": "Blizzard API bindings for PHP.",
   "type": "library",
+  "license": [
+    "MIT"
+  ],
   "require": {
-    "php": ">=8.2",
+    "php": ">=8.3",
     "guzzlehttp/guzzle": "^7.8",
     "league/oauth2-client": "^2.7",
     "symfony/serializer": "^6.3",
@@ -26,11 +29,13 @@
     "pestphp/pest": "^2.18",
     "phpstan/phpstan": "^1.10",
     "laravel/pint": "^1.13",
-    "pestphp/pest-plugin-type-coverage": "^2.2.0"
+    "pestphp/pest-plugin-type-coverage": "^2.2.0",
+    "pestphp/pest-plugin-watch": "^2.0"
   },
   "minimum-stability": "stable",
   "scripts": {
     "test": "./vendor/bin/pest",
+    "watch": "./vendor/bin/pest --watch",
     "lint": "./vendor/bin/phpstan analyse src tests",
     "fmt": "./vendor/bin/pint",
     "prepare": "git config core.hookspath .githooks",
