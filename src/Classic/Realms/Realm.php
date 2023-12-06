@@ -61,7 +61,8 @@ final readonly class Realm
         int $id,
         string $name,
         ?RealmRegion $region,
-        ?bool $isTournament)
+        ?bool $isTournament,
+        ?string $timezone)
     {
         $this->slug = $slug;
         $this->id = $id;
@@ -70,5 +71,6 @@ final readonly class Realm
         $this->name = $name;
         $this->region = $region;
         $this->isTournament = $isTournament;
+        $this->timezone = $timezone;
     }
 }
