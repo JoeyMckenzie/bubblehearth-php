@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Bubblehearth\Bubblehearth\Classic\Models;
+namespace Bubblehearth\Bubblehearth;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * Localities supported by Blizzard's APIs.
  */
-final readonly class RealmLocale
+final readonly class LocalizedItem
 {
     /**
      * @var string represents United States English locale.

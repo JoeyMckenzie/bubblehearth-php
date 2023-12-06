@@ -6,23 +6,23 @@ namespace Feature;
 
 use Bubblehearth\Bubblehearth\AccountRegion;
 use Bubblehearth\Bubblehearth\BubbleHearthClient;
-use Bubblehearth\Bubblehearth\Classic\Models\RealmLocale;
 use Bubblehearth\Bubblehearth\Locale;
+use Bubblehearth\Bubblehearth\LocalizedItem;
 
 test('returns a list of realms from the index endpoint', function () {
     // Arrange
     $clientId = (string) getenv('CLIENT_ID');
     $clientSecret = (string) getenv('CLIENT_SECRET');
-    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US);
+    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
 
     // Act
-    $realms = $client->classic->getRealmIndex();
+    $realms = $client->classic->realms->getRealmIndex();
 
     // Assert
     expect($realms)
         ->not->toBeNull()
         ->and($realms->realms)->not->toBeEmpty()
-        ->and($realms->realms[0]->name)->toBeInstanceOf(RealmLocale::class)
+        ->and($realms->realms[0]->name)->toBeInstanceOf(LocalizedItem::class)
         ->and($realms->realms[0]->region)->toBeNull();
 });
 
@@ -30,10 +30,10 @@ test('returns a single locale for realms when locale is provided', function () {
     // Arrange
     $clientId = (string) getenv('CLIENT_ID');
     $clientSecret = (string) getenv('CLIENT_SECRET');
-    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US);
+    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
 
     // Act
-    $realms = $client->classic->getRealmIndex(Locale::EnglishUS);
+    $realms = $client->classic->realms->getRealmIndex();
 
     // Assert
     expect($realms)
@@ -47,26 +47,26 @@ test('returns a all locales for realms when locale is not provided', function ()
     // Arrange
     $clientId = (string) getenv('CLIENT_ID');
     $clientSecret = (string) getenv('CLIENT_SECRET');
-    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US);
+    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
 
     // Act
-    $realms = $client->classic->getRealmIndex();
+    $realms = $client->classic->realms->getRealmIndex();
 
     // Assert
     expect($realms)
         ->not->toBeNull()
         ->and($realms->realms)->not->toBeEmpty()
-        ->and($realms->realms[0]->name)->toBeInstanceOf(RealmLocale::class);
+        ->and($realms->realms[0]->name)->toBeInstanceOf(LocalizedItem::class);
 });
 
 test('returns a single locale for a realm when locale is provided', function () {
     // Arrange
     $clientId = (string) getenv('CLIENT_ID');
     $clientSecret = (string) getenv('CLIENT_SECRET');
-    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US);
+    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
 
     // Act
-    $realm = $client->classic->getRealm('grobbulus', Locale::EnglishUS);
+    $realm = $client->classic->realms->getRealm('grobbulus', Locale::EnglishUS);
 
     // Assert
     expect($realm)->not->toBeNull()
@@ -77,24 +77,15 @@ test('returns a single locale for a realm when locale is provided', function () 
         ->and($realm->name)->toBeString();
 });
 
-test('returns all locales for a realm when locale is not provided', function () {
+test('returns paginated results for a realm search', function () {
     // Arrange
     $clientId = (string) getenv('CLIENT_ID');
     $clientSecret = (string) getenv('CLIENT_SECRET');
-    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US);
+    $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
 
     // Act
-    $realm = $client->classic->getRealm('grobbulus');
-    /** @var RealmLocale $realmName */
-    $realmName = $realm->name;
+    $realms = $client->classic->realms->searchRealms();
 
     // Assert
-    expect($realm)->not->toBeNull()
-        ->and($realm->slug)->toBe('grobbulus')
-        ->and($realm->key)->toBeNull()
-        ->and($realm->id)->not->toBeNull()
-        ->and($realmName)->toBeInstanceOf(RealmLocale::class)
-        ->and($realmName->chineseCN)->toBe('格罗布鲁斯')
-        ->and($realm->region)->not->toBeNull()
-        ->and($realm->region?->name)->not->toBeNull();
+    expect($realms)->not->toBeNull();
 });

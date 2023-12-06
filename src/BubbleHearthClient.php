@@ -35,31 +35,17 @@ final readonly class BubbleHearthClient
      */
     public ClassicClient $classic;
 
-    /**
-     * @var Client internal Guzzle instance used for all API requests.
-     */
-    private Client $client;
-
-    /**
-     * @var Serializer internal serializer for marshalling objects.
-     */
-    private Serializer $serializer;
-
-    /**
-     * @param  string  $clientId registered client ID provided by Blizzard.
-     * @param  string  $clientSecret registered client secret provided by Blizzard.
-     * @param  AccountRegion  $accountRegion region the client should target for API calls.
-     */
     public function __construct(
-        private string $clientId,
-        private string $clientSecret,
-        private AccountRegion $accountRegion,
-        protected int $timeoutSeconds = DEFAULT_TIMEOUT_SECONDS)
+        string $clientId,
+        string $clientSecret,
+        AccountRegion $accountRegion,
+        Locale $locale,
+        int $timeoutSeconds = DEFAULT_TIMEOUT_SECONDS)
     {
-        $this->client = new Client(['timeout' => $this->timeoutSeconds]);
-        $this->serializer = self::initializeSerializer();
-        $authenticationContext = new AuthenticationContext($this->client, $this->serializer, $this->accountRegion, $this->clientId, $this->clientSecret, $this->timeoutSeconds);
-        $this->classic = new ClassicClient($this->client, $this->accountRegion, $authenticationContext, $this->serializer);
+        $client = new Client(['timeout' => $timeoutSeconds]);
+        $serializer = self::initializeSerializer();
+        $authenticationContext = new AuthenticationContext($client, $serializer, $accountRegion, $clientId, $clientSecret, $timeoutSeconds);
+        $this->classic = new ClassicClient($client, $accountRegion, $locale, $authenticationContext, $serializer);
     }
 
     /**

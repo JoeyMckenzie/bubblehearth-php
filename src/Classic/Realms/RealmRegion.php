@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bubblehearth\Bubblehearth\Classic\Models;
+namespace Bubblehearth\Bubblehearth\Classic\Realms;
 
 use Bubblehearth\Bubblehearth\Models\DocumentKey;
 
@@ -12,24 +12,24 @@ use Bubblehearth\Bubblehearth\Models\DocumentKey;
 final readonly class RealmRegion
 {
     /**
-     * @var int ID of the realm region.
+     * @var null|int ID of the realm region.
      */
-    public int $id;
+    public ?int $id;
 
     /**
-     * @var RealmLocale|string name of the realm region.
+     * @var string name of the realm region.
      */
-    public RealmLocale|string $name;
+    public string $name;
 
     /**
-     * @var DocumentKey key to the realm region, URL.
+     * @var null|DocumentKey key to the realm region, URL.
      */
-    public DocumentKey $key;
+    public ?DocumentKey $key;
 
     public function __construct(
         int $id,
         DocumentKey $key,
-        string|RealmLocale $name
+        string $name
     ) {
         $this->id = $id;
         $this->key = $key;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bubblehearth\Bubblehearth\Classic\Models;
+namespace Bubblehearth\Bubblehearth\Classic\Realms;
 
 use Bubblehearth\Bubblehearth\Models\DocumentKey;
 use Bubblehearth\Bubblehearth\Models\Links;
@@ -35,22 +35,32 @@ final readonly class Realm
     public ?DocumentKey $key;
 
     /**
-     * @var string|RealmLocale localized realm name.
+     * @var string localized realm name.
      */
-    public string|RealmLocale $name;
+    public string $name;
 
     /**
-     * @var RealmRegion|null realm region, including document links.
+     * @var RealmRegion realm region, including document links.
      */
-    public ?RealmRegion $region;
+    public string $region;
+
+    /**
+     * @var bool|null optional flag representing if the realm is a PVP tournament realm.
+     */
+    public ?bool $isTournament;
+
+    /**
+     * @var string|null optional timezone.
+     */
+    public ?string $timezone;
 
     public function __construct(
         string $slug,
         int $id,
         ?Links $links,
         ?DocumentKey $key,
-        string|RealmLocale $name,
-        ?RealmRegion $region)
+        string $name,
+        string $region)
     {
         $this->slug = $slug;
         $this->id = $id;

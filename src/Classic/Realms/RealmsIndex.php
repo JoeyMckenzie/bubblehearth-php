@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bubblehearth\Bubblehearth\Classic\Models;
+namespace Bubblehearth\Bubblehearth\Classic\Realms;
 
 use Bubblehearth\Bubblehearth\Models\Links;
 use Symfony\Component\Serializer\Annotation\SerializedName;
