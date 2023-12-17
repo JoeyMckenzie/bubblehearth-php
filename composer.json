@@ -38,7 +38,8 @@
     "lint": "./vendor/bin/phpstan analyse src tests",
     "fmt": "./vendor/bin/pint",
     "prepare": "git config core.hookspath .githooks",
-    "types": "./vendor/bin/pest --type-coverage --min=100"
+    "types": "./vendor/bin/pest --type-coverage --min=100",
+    "ci": "composer run lint && composer run types && composer run test"
   },
   "config": {
     "allow-plugins": {
