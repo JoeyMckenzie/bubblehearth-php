@@ -2,6 +2,8 @@
 
 ![BubbleHearth Logo](https://your-library-logo-url.png)
 
+[![CI](https://github.com/JoeyMckenzie/bubblehearth-php/actions/workflows/ci.yml/badge.svg)](https://github.com/JoeyMckenzie/bubblehearth-php/actions/workflows/ci.yml)
+
 ## Overview
 
 The BubbleHearth is a convenient and easy-to-use PHP wrapper for accessing the Blizzard Game Data APIs. It
