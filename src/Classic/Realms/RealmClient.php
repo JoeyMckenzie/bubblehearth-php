@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace Bubblehearth\Bubblehearth\Classic\Realms;
 
-use Bubblehearth\Bubblehearth\AccountRegion;
-use Bubblehearth\Bubblehearth\Authentication\AuthenticationContext;
-use Bubblehearth\Bubblehearth\Locale;
+use Bubblehearth\Bubblehearth\BubbleHearthClient;
 use Bubblehearth\Bubblehearth\Models\SearchResults;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * A client connector for the various realm endpoints and APIs.
@@ -18,42 +14,13 @@ use Symfony\Component\Serializer\Serializer;
 final readonly class RealmClient
 {
     /**
-     * @var Serializer global Symfony serializer configured for Bubblehearth.
+     * @var string Subdomain associated to the account region.
      */
-    private Serializer $serializer;
+    private string $regionSubdomain;
 
-    /**
-     * @var AuthenticationContext internally cached authentication context, allowing for token reuse and smart refreshing.
-     */
-    private AuthenticationContext $authentication;
-
-    /**
-     * @var AccountRegion configured account region.
-     */
-    private AccountRegion $region;
-
-    /**
-     * @var Locale configured locale.
-     */
-    private Locale $locale;
-
-    /**
-     * @var Client internal Guzzle client, configured for timeout and other defaults.
-     */
-    private Client $http;
-
-    public function __construct(
-        Client $http,
-        AccountRegion $region,
-        Locale $locale,
-        AuthenticationContext $authentication,
-        Serializer $serializer)
+    public function __construct(private BubbleHearthClient $internalClient)
     {
-        $this->http = $http;
-        $this->region = $region;
-        $this->locale = $locale;
-        $this->authentication = $authentication;
-        $this->serializer = $serializer;
+        $this->regionSubdomain = $this->internalClient->accountRegion->value;
     }
 
     /**
@@ -63,18 +30,12 @@ final readonly class RealmClient
      */
     public function getRealmIndex(): RealmsIndex
     {
-        $regionSubdomain = $this->region->value;
-        $url = "https://$regionSubdomain.api.blizzard.com/data/wow/realm/index";
-        $token = $this->authentication->getAccessToken();
-        $headers = ['Authorization' => "Bearer $token", 'Battlenet-Namespace' => "dynamic-classic-$regionSubdomain"];
-        $response = $this->http->get($url, [
-            'headers' => $headers,
-            'query' => ['locale' => $this->locale->value],
-        ]);
+        $url = "https://$this->regionSubdomain.api.blizzard.com/data/wow/realm/index";
 
-        $contents = $response->getBody()->getContents();
+        /** @var RealmsIndex $response */
+        $response = $this->internalClient->sendAndDeserialize($url, RealmsIndex::class);
 
-        return $this->serializer->deserialize($contents, RealmsIndex::class, 'json');
+        return $response;
     }
 
     /**
@@ -86,16 +47,12 @@ final readonly class RealmClient
      */
     public function getRealm(string $realmSlug): Realm
     {
-        $regionSubdomain = $this->region->value;
-        $url = "https://$regionSubdomain.api.blizzard.com/data/wow/realm/$realmSlug";
-        $token = $this->authentication->getAccessToken();
-        $headers = ['Authorization' => "Bearer $token", 'Battlenet-Namespace' => "dynamic-classic-$regionSubdomain"];
-        $response = $this->http->get($url, [
-            'headers' => $headers,
-            'query' => ['locale' => $this->locale->value],
-        ]);
+        $url = "https://$this->regionSubdomain.api.blizzard.com/data/wow/realm/$realmSlug";
 
-        return $this->serializer->deserialize($response->getBody()->getContents(), Realm::class, 'json');
+        /** @var Realm $response */
+        $response = $this->internalClient->sendAndDeserialize($url, Realm::class);
+
+        return $response;
     }
 
     /**
@@ -108,14 +65,13 @@ final readonly class RealmClient
      *
      * @throws GuzzleException
      */
-    public function searchRealms(string $timezone = '', string $orderBy = '', int $offset = 1): SearchResults
+    public function searchRealms(string $timezone = '', string $orderBy = '', int $offset = 0, int $page = 1): SearchResults
     {
-        $regionSubdomain = $this->region->value;
-        $url = "https://$regionSubdomain.api.blizzard.com/data/wow/search/realm";
-
-        $token = $this->authentication->getAccessToken();
-        $headers = ['Authorization' => "Bearer $token", 'Battlenet-Namespace' => "dynamic-classic-$regionSubdomain"];
-        $queryParams = ['offset' => $offset];
+        $url = "https://$this->regionSubdomain.api.blizzard.com/data/wow/search/realm";
+        $queryParams = [
+            'offset' => $offset,
+            'page' => $page,
+        ];
 
         if (! empty($timezone)) {
             $queryParams[] = ['timezone' => $timezone];
@@ -125,11 +81,9 @@ final readonly class RealmClient
             $queryParams[] = ['orderBy' => $orderBy];
         }
 
-        $response = $this->http->get($url, [
-            'headers' => $headers,
-            'query' => $queryParams,
-        ]);
+        /** @var SearchResults<Realm> $response */
+        $response = $this->internalClient->sendAndDeserialize($url, SearchResults::class, $queryParams);
 
-        return $this->serializer->deserialize($response->getBody()->getContents(), SearchResults::class, 'json');
+        return $response;
     }
 }

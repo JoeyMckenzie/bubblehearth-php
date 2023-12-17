@@ -16,18 +16,22 @@ enum AccountRegion: string implements AuthorizableEndpoint
      * Represents the China region and China API gateway.
      */
     case CN = 'cn';
+
     /**
      * Represents the United States region and Global API gateway.
      */
     case US = 'us';
+
     /**
      * Represents the European Union region and Global API gateway.
      */
     case EU = 'eu';
+
     /**
      * Represents the Korean region and Global API gateway.
      */
     case KR = 'kr';
+
     /**
      * Represents the Taiwan States region and Global API gateway.
      */

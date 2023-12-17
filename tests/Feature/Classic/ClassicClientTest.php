@@ -85,4 +85,21 @@ describe('realms', function () {
         // Assert
         expect($realms)->not->toBeNull();
     });
+
+    test('returns paginated results for a realm search when query parameters are provided', function () {
+        // Arrange
+        $clientId = (string) getenv('CLIENT_ID');
+        $clientSecret = (string) getenv('CLIENT_SECRET');
+        $client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
+
+        // Act
+        $realms = $client
+            ->classic()
+            ->realms()
+            ->searchRealms(page: 2);
+
+        // Assert
+        expect($realms)->not->toBeNull()
+            ->and($realms->results)->toBeGreaterThan(10);
+    });
 });

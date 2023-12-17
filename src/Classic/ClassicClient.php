@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Bubblehearth\Bubblehearth\Classic;
 
-use Bubblehearth\Bubblehearth\AccountRegion;
-use Bubblehearth\Bubblehearth\Authentication\AuthenticationContext;
+use Bubblehearth\Bubblehearth\BubbleHearthClient;
 use Bubblehearth\Bubblehearth\Classic\Realms\RealmClient;
-use Bubblehearth\Bubblehearth\Locale;
-use GuzzleHttp\Client;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * A client for WoW Classic, utilizing the base client authentication.
@@ -21,14 +17,9 @@ final readonly class ClassicClient
      */
     private RealmClient $realms;
 
-    public function __construct(
-        Client $http,
-        AccountRegion $region,
-        Locale $locale,
-        AuthenticationContext $authentication,
-        Serializer $serializer)
+    public function __construct(BubbleHearthClient $internalClient)
     {
-        $this->realms = new RealmClient($http, $region, $locale, $authentication, $serializer);
+        $this->realms = new RealmClient($internalClient);
     }
 
     public function realms(): RealmClient

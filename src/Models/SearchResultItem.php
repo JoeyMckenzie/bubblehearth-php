@@ -7,7 +7,7 @@ namespace Bubblehearth\Bubblehearth\Models;
 /**
  * A generic search result item containing both key and the relevant search data.
  *
- * @template T
+ * @template T generic search type returned from results.
  */
 final readonly class SearchResultItem
 {
