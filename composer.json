@@ -11,7 +11,8 @@
     "league/oauth2-client": "^2.7",
     "symfony/serializer": "^6.3 || ^7.0",
     "symfony/property-access": "^6.3 || ^7.0",
-    "doctrine/annotations": "^2.0"
+    "doctrine/annotations": "^2.0",
+    "nesbot/carbon": "^2.72"
   },
   "autoload": {
     "psr-4": {

@@ -6,9 +6,7 @@ namespace Bubblehearth\Bubblehearth;
 
 use Bubblehearth\Bubblehearth\Authentication\AuthenticationResponse;
 use Bubblehearth\Bubblehearth\Classic\ClassicClient;
-use DateInterval;
-use DateTime;
-use Exception;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
@@ -33,6 +31,12 @@ final class BubbleHearthClient
      * Default HTTP timeout, can be overridden when building the client.
      */
     private const int DEFAULT_TIMEOUT_SECONDS = 5;
+
+    /**
+     * Base URL for the Blizzard API. We'll programmatically
+     * update this to the proper subdomain when requests are made.
+     */
+    private const string BASE_URL = 'https://[region].api.blizzard.com';
 
     /**
      * @var string required client ID.
@@ -70,9 +74,9 @@ final class BubbleHearthClient
     private ?string $accessToken;
 
     /**
-     * @var DateTime|null internally tracked expiration date/time of the current access token.
+     * @var Carbon|null internally tracked expiration date/time of the current access token.
      */
-    private ?DateTime $expiresAt;
+    private ?Carbon $expiresAt;
 
     public function __construct(
         string $clientId,
@@ -87,7 +91,7 @@ final class BubbleHearthClient
         $this->locale = $locale;
         $this->client = new Client(['timeout' => $timeoutSeconds]);
         $this->serializer = self::initializeSerializer();
-        $this->expiresAt = new DateTime('now');
+        $this->expiresAt = null;
         $this->accessToken = null;
     }
 
@@ -122,15 +126,15 @@ final class BubbleHearthClient
      * deserialize the response into the target type.
      *
      *
-     * @param  string  $url target Game Data API URL.
+     * @param  string  $uri target Game Data API URI.
      * @param  string  $type target type to deserialize into.
      * @param  array<string, string|int>|null  $query optional query parameters.
      *
      * @throws GuzzleException
      */
-    public function sendAndDeserialize(string $url, string $type, ?array $query = null): mixed
+    public function sendAndDeserialize(string $uri, string $type, ?array $query = null): mixed
     {
-        $response = self::sendRequest($url, $query);
+        $response = self::sendRequest($uri, $query);
         $body = $response->getBody()->getContents();
 
         return $this->serializer->deserialize($body, $type, 'json');
@@ -138,13 +142,16 @@ final class BubbleHearthClient
 
     /**
      * Sends a request to Blizzard, used by all child client connectors.
+     * Requests can include optional query parameters in which, if they
+     * are included, will be merged with the default locale included on
+     * each request.
      *
-     * @param  string  $url target Game Data API URL.
+     * @param  string  $uri target Game Data API URI.
      * @param  array<string, string|int>|null  $query optional query parameters.
      *
      * @throws GuzzleException
      */
-    public function sendRequest(string $url, ?array $query = null): ResponseInterface
+    public function sendRequest(string $uri, ?array $query = null): ResponseInterface
     {
         $token = self::getAccessToken();
         $region = $this->accountRegion->value;
@@ -164,6 +171,8 @@ final class BubbleHearthClient
         }
 
         $requestOptions['query'] = $queryParams;
+        $baseUrl = str_replace('[region]', $this->accountRegion->value, self::BASE_URL);
+        $url = $baseUrl.'/'.$uri;
 
         return $this->client->get($url, $requestOptions);
     }
@@ -175,11 +184,10 @@ final class BubbleHearthClient
      * @return string access token.
      *
      * @throws GuzzleException
-     * @throws Exception
      */
     private function getAccessToken(): string
     {
-        $tokenRefreshRequired = ! is_null($this->expiresAt) && $this->expiresAt < new DateTime();
+        $tokenRefreshRequired = ! is_null($this->expiresAt) && $this->expiresAt < Carbon::now();
 
         if (! is_null($this->accessToken) && ! $tokenRefreshRequired) {
             return $this->accessToken;
@@ -198,9 +206,7 @@ final class BubbleHearthClient
         $body = $response->getBody()->getContents();
         $authResponse = $this->serializer->deserialize($body, AuthenticationResponse::class, 'json');
         $this->accessToken = $authResponse->accessToken;
-        $this->expiresAt = new DateTime();
-        $interval = new DateInterval('PT'.$authResponse->expiresIn.'S');
-        $this->expiresAt->add($interval);
+        $this->expiresAt = Carbon::now()->addSeconds($authResponse->expiresIn);
 
         return $this->accessToken;
     }

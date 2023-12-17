@@ -39,7 +39,7 @@
 |
 */
 
-function something(): void
-{
-    // ..
-}
+// function something(): void
+// {
+//     // ..
+// }

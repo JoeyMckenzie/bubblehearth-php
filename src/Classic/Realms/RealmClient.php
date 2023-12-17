@@ -13,14 +13,8 @@ use GuzzleHttp\Exception\GuzzleException;
  */
 final readonly class RealmClient
 {
-    /**
-     * @var string Subdomain associated to the account region.
-     */
-    private string $regionSubdomain;
-
     public function __construct(private BubbleHearthClient $internalClient)
     {
-        $this->regionSubdomain = $this->internalClient->accountRegion->value;
     }
 
     /**
@@ -30,7 +24,7 @@ final readonly class RealmClient
      */
     public function getRealmIndex(): RealmsIndex
     {
-        $url = "https://$this->regionSubdomain.api.blizzard.com/data/wow/realm/index";
+        $url = 'data/wow/realm/index';
 
         /** @var RealmsIndex $response */
         $response = $this->internalClient->sendAndDeserialize($url, RealmsIndex::class);
@@ -47,10 +41,10 @@ final readonly class RealmClient
      */
     public function getRealm(string $realmSlug): Realm
     {
-        $url = "https://$this->regionSubdomain.api.blizzard.com/data/wow/realm/$realmSlug";
+        $uri = "data/wow/realm/$realmSlug";
 
         /** @var Realm $response */
-        $response = $this->internalClient->sendAndDeserialize($url, Realm::class);
+        $response = $this->internalClient->sendAndDeserialize($uri, Realm::class);
 
         return $response;
     }
@@ -67,7 +61,7 @@ final readonly class RealmClient
      */
     public function searchRealms(string $timezone = '', string $orderBy = '', int $offset = 0, int $page = 1): SearchResults
     {
-        $url = "https://$this->regionSubdomain.api.blizzard.com/data/wow/search/realm";
+        $uri = 'data/wow/search/realm';
         $queryParams = [
             'offset' => $offset,
             'page' => $page,
@@ -82,7 +76,7 @@ final readonly class RealmClient
         }
 
         /** @var SearchResults<Realm> $response */
-        $response = $this->internalClient->sendAndDeserialize($url, SearchResults::class, $queryParams);
+        $response = $this->internalClient->sendAndDeserialize($uri, SearchResults::class, $queryParams);
 
         return $response;
     }
