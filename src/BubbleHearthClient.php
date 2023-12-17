@@ -124,7 +124,7 @@ final class BubbleHearthClient
      *
      * @param  string  $url target Game Data API URL.
      * @param  string  $type target type to deserialize into.
-     * @param  array|null  $query optional query parameters.
+     * @param  array<string, string|int>|null  $query optional query parameters.
      *
      * @throws GuzzleException
      */
@@ -140,7 +140,7 @@ final class BubbleHearthClient
      * Sends a request to Blizzard, used by all child client connectors.
      *
      * @param  string  $url target Game Data API URL.
-     * @param  array|null  $query optional query parameters.
+     * @param  array<string, string|int>|null  $query optional query parameters.
      *
      * @throws GuzzleException
      */

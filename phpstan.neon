@@ -3,10 +3,3 @@ parameters:
 	paths:
 		- src
 		- tests
-	ignoreErrors:
-		-
-			message: '#Method Bubblehearth\\Bubblehearth\\BubbleHearthClient::sendAndDeserialize\(\) has parameter \$query with no value type specified in iterable type array.#'
-			path: src/BubbleHearthClient.php
-		-
-			message: '#Method Bubblehearth\\Bubblehearth\\BubbleHearthClient::sendRequest\(\) has parameter \$query with no value type specified in iterable type array.#'
-			path: src/BubbleHearthClient.php

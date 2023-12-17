@@ -74,11 +74,11 @@ final readonly class RealmClient
         ];
 
         if (! empty($timezone)) {
-            $queryParams[] = ['timezone' => $timezone];
+            $queryParams = array_merge(['timezone' => $timezone]);
         }
 
         if (! empty($orderBy)) {
-            $queryParams[] = ['orderBy' => $orderBy];
+            $queryParams = array_merge(['orderBy' => $orderBy]);
         }
 
         /** @var SearchResults<Realm> $response */
