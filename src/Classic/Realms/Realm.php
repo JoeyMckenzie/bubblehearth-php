@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Bubblehearth\Bubblehearth\Classic\Realms;
 
+use Bubblehearth\Bubblehearth\LocalizedItem;
+use Bubblehearth\Bubblehearth\LocalizedName;
 use Bubblehearth\Bubblehearth\Models\DocumentKey;
 use Bubblehearth\Bubblehearth\Models\Links;
 use Bubblehearth\Bubblehearth\Timezone;
@@ -36,19 +38,19 @@ final class Realm
     public ?DocumentKey $key = null;
 
     /**
-     * @var string localized realm name.
+     * @var string|LocalizedItem localized realm name.
      */
-    public string $name;
+    public string|LocalizedItem $name;
 
     /**
-     * @var ?string realm category including region and timezone.
+     * @var string|LocalizedItem realm category including region and timezone.
      */
-    public ?string $category;
+    public string|LocalizedItem $category;
 
     /**
-     * @var RealmRegion|null realm region, including document links.
+     * @var RealmRegion|LocalizedName|null realm region, including document links.
      */
-    public ?RealmRegion $region = null;
+    public RealmRegion|LocalizedName|null $region = null;
 
     /**
      * @var bool|null optional flag representing if the realm is a PVP tournament realm.
@@ -61,9 +63,9 @@ final class Realm
     public ?string $timezone = null;
 
     /**
-     * @var RealmType|null optional realm type.
+     * @var RealmType|LocalizedItem|null optional realm type.
      */
-    public ?RealmType $type = null;
+    public RealmType|LocalizedItem|null $type = null;
 
     /**
      * @var ?DocumentKey key to mega server this realm is connected to.

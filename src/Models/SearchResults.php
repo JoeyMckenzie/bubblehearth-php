@@ -6,10 +6,8 @@ namespace Bubblehearth\Bubblehearth\Models;
 
 /**
  * A generic search result class for search endpoints and APIs.
- *
- * @template T search result data type.
  */
-abstract class SearchResults
+class SearchResults
 {
     /**
      * @var int current page of the search results.
@@ -30,9 +28,4 @@ abstract class SearchResults
      * @var int total number of pages of search results.
      */
     public int $pageCount;
-
-    /**
-     * @var SearchResultItem<T>[] search results generic over a type.
-     */
-    public array $results;
 }

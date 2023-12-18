@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 /**
  * Localities supported by Blizzard's APIs.
  */
-final readonly class LocalizedItem
+final class LocalizedItem
 {
     /**
      * @var string represents United States English locale.
@@ -82,32 +82,4 @@ final readonly class LocalizedItem
      */
     #[SerializedName('zh_CN')]
     public string $chineseCN;
-
-    public function __construct(
-        string $englishUS,
-        string $englishGB,
-        string $spanishMX,
-        string $spanishES,
-        string $portuguese,
-        string $german,
-        string $french,
-        string $italian,
-        string $russian,
-        string $korean,
-        string $chineseTW,
-        string $chineseCN,
-    ) {
-        $this->englishUS = $englishUS;
-        $this->englishGB = $englishGB;
-        $this->spanishMX = $spanishMX;
-        $this->spanishES = $spanishES;
-        $this->portuguese = $portuguese;
-        $this->german = $german;
-        $this->french = $french;
-        $this->italian = $italian;
-        $this->russian = $russian;
-        $this->korean = $korean;
-        $this->chineseTW = $chineseTW;
-        $this->chineseCN = $chineseCN;
-    }
 }

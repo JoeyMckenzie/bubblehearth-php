@@ -73,7 +73,7 @@ final readonly class RealmClient
         }
 
         /** @var RealmSearchResults $response */
-        $response = $this->internalClient->sendAndDeserialize($uri, RealmSearchResults::class, $queryParams, false);
+        $response = $this->internalClient->sendAndDeserialize($uri, RealmSearchResults::class, query: $queryParams, includeLocale: false);
 
         return $response;
     }

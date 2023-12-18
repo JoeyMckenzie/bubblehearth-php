@@ -7,8 +7,8 @@ namespace Feature;
 use Bubblehearth\Bubblehearth\AccountRegion;
 use Bubblehearth\Bubblehearth\BubbleHearthClient;
 use Bubblehearth\Bubblehearth\Classic\Realms\Realm;
+use Bubblehearth\Bubblehearth\Classic\Realms\RealmSearchItemResult;
 use Bubblehearth\Bubblehearth\Locale;
-use Bubblehearth\Bubblehearth\Models\SearchResultItem;
 
 describe('realms', function () {
     test('returns a list of realms from the index endpoint', function () {
@@ -89,15 +89,12 @@ describe('realms', function () {
             ->and($realms->maxPageSize)->toBe(100)
             ->and($realms->pageCount)->toBe(1);
         collect($realms->results)
-            ->each(function (SearchResultItem $searchResult): void {
-                /** @var Realm $realm */
-                $realm = $searchResult->data;
-                expect($searchResult)->not()->toBeNull()
-                    ->and($realm)->not()->toBeNull()
-                    ->and($realm->isTournament)->not()->toBeNull()
-                    ->and($realm->timezone)->not()->toBeNull()
-                    ->and($realm->name)->not()->toBeNull();
-            });
+            ->each(fn (RealmSearchItemResult $searchResult) => expect($searchResult)->not()->toBeNull()
+                ->and($searchResult->data)->not()->toBeNull()
+                ->and($searchResult->data->isTournament)->not()->toBeNull()
+                ->and($searchResult->data->timezone)->not()->toBeNull()
+                ->and($searchResult->data->name)->not()->toBeNull()
+            );
     });
 
     test('returns paginated results for a realm search when query parameters are provided', function () {
