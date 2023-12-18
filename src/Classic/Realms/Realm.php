@@ -6,12 +6,13 @@ namespace Bubblehearth\Bubblehearth\Classic\Realms;
 
 use Bubblehearth\Bubblehearth\Models\DocumentKey;
 use Bubblehearth\Bubblehearth\Models\Links;
+use Bubblehearth\Bubblehearth\Timezone;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * Realm metadata for all available World of Warcraft Classic servers.
  */
-final readonly class Realm
+final class Realm
 {
     /**
      * @var string slugified realm name.
@@ -27,12 +28,12 @@ final readonly class Realm
      * @var Links|null top-level document link to follow of the selected realm ID
      */
     #[SerializedName('_links')]
-    public ?Links $links;
+    public ?Links $links = null;
 
     /**
      * @var DocumentKey|null document key for the realm, defaults to the URL.
      */
-    public ?DocumentKey $key;
+    public ?DocumentKey $key = null;
 
     /**
      * @var string localized realm name.
@@ -40,37 +41,37 @@ final readonly class Realm
     public string $name;
 
     /**
+     * @var ?string realm category including region and timezone.
+     */
+    public ?string $category;
+
+    /**
      * @var RealmRegion|null realm region, including document links.
      */
-    public ?RealmRegion $region;
+    public ?RealmRegion $region = null;
 
     /**
      * @var bool|null optional flag representing if the realm is a PVP tournament realm.
      */
-    public ?bool $isTournament;
+    public ?bool $isTournament = null;
 
     /**
      * @var string|null optional timezone.
      */
-    public ?string $timezone;
+    public ?string $timezone = null;
 
-    public function __construct(
-        ?DocumentKey $key,
-        ?Links $links,
-        string $slug,
-        int $id,
-        string $name,
-        ?RealmRegion $region,
-        ?bool $isTournament,
-        ?string $timezone)
+    /**
+     * @var RealmType|null optional realm type.
+     */
+    public ?RealmType $type = null;
+
+    /**
+     * @var ?DocumentKey key to mega server this realm is connected to.
+     */
+    public ?DocumentKey $connectedRealm;
+
+    public function getConvertedTimezone(): ?Timezone
     {
-        $this->slug = $slug;
-        $this->id = $id;
-        $this->links = $links;
-        $this->key = $key;
-        $this->name = $name;
-        $this->region = $region;
-        $this->isTournament = $isTournament;
-        $this->timezone = $timezone;
+        return Timezone::tryFrom($this->timezone ?? '');
     }
 }

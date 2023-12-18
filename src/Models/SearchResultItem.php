@@ -12,18 +12,10 @@ namespace Bubblehearth\Bubblehearth\Models;
 final readonly class SearchResultItem
 {
     /**
-     * @var DocumentKey search item document key, URL.
+     * @param  DocumentKey  $key search item document key, URL.
+     * @param  T  $data resulting collection data.
      */
-    public DocumentKey $key;
-
-    /**
-     * @var T generic search result data.
-     */
-    public mixed $data;
-
-    public function __construct(DocumentKey $key, mixed $data)
+    public function __construct(public DocumentKey $key, public mixed $data)
     {
-        $this->key = $key;
-        $this->data = $data;
     }
 }

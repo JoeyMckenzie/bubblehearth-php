@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Bubblehearth\Bubblehearth\Classic\Realms;
 
 use Bubblehearth\Bubblehearth\BubbleHearthClient;
-use Bubblehearth\Bubblehearth\Models\SearchResults;
 use GuzzleHttp\Exception\GuzzleException;
 
 /**
@@ -54,17 +53,15 @@ final readonly class RealmClient
      *
      * @param  string  $timezone timezone of the realm. (example search field)
      * @param  string  $orderBy field to sort the result set by.
-     * @param  int  $offset result page number
-     * @return SearchResults<Realm> realms from the search.
+     * @return RealmSearchResults realms from the search.
      *
      * @throws GuzzleException
      */
-    public function searchRealms(string $timezone = '', string $orderBy = '', int $offset = 0, int $page = 1): SearchResults
+    public function searchRealms(string $timezone = '', string $orderBy = '', int $page = 1): RealmSearchResults
     {
         $uri = 'data/wow/search/realm';
         $queryParams = [
-            'offset' => $offset,
-            'page' => $page,
+            '_page' => $page,
         ];
 
         if (! empty($timezone)) {
@@ -72,11 +69,11 @@ final readonly class RealmClient
         }
 
         if (! empty($orderBy)) {
-            $queryParams = array_merge(['orderBy' => $orderBy]);
+            $queryParams = array_merge(['orderby' => $orderBy]);
         }
 
-        /** @var SearchResults<Realm> $response */
-        $response = $this->internalClient->sendAndDeserialize($uri, SearchResults::class, $queryParams);
+        /** @var RealmSearchResults $response */
+        $response = $this->internalClient->sendAndDeserialize($uri, RealmSearchResults::class, $queryParams, false);
 
         return $response;
     }

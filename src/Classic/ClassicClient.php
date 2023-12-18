@@ -12,18 +12,12 @@ use Bubblehearth\Bubblehearth\Classic\Realms\RealmClient;
  */
 final readonly class ClassicClient
 {
-    /**
-     * @var RealmClient client connector for realm data.
-     */
-    private RealmClient $realms;
-
-    public function __construct(BubbleHearthClient $internalClient)
+    public function __construct(private BubbleHearthClient $internalClient)
     {
-        $this->realms = new RealmClient($internalClient);
     }
 
     public function realms(): RealmClient
     {
-        return $this->realms;
+        return new RealmClient($this->internalClient);
     }
 }

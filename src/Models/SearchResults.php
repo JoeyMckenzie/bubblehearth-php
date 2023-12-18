@@ -9,7 +9,7 @@ namespace Bubblehearth\Bubblehearth\Models;
  *
  * @template T search result data type.
  */
-final readonly class SearchResults
+abstract class SearchResults
 {
     /**
      * @var int current page of the search results.
@@ -17,39 +17,22 @@ final readonly class SearchResults
     public int $page;
 
     /**
-     * @var int|null count of the current page's result.
+     * @var int count of the current page's result.
      */
-    public ?int $pageSize;
+    public int $pageSize;
 
     /**
-     * @var int|null max page count limit;
+     * @var int max page count limit;
      */
-    public ?int $maxPageSize;
+    public int $maxPageSize;
 
     /**
-     * @var int|null total number of pages of search results.
+     * @var int total number of pages of search results.
      */
-    public ?int $pageCount;
+    public int $pageCount;
 
     /**
      * @var SearchResultItem<T>[] search results generic over a type.
      */
     public array $results;
-
-    /**
-     * @param  SearchResultItem<T>[]  $results
-     */
-    public function __construct(
-        int $page,
-        ?int $pageSize,
-        ?int $maxPageSize,
-        ?int $pageCount,
-        array $results)
-    {
-        $this->page = $page;
-        $this->pageSize = $pageSize;
-        $this->maxPageSize = $maxPageSize;
-        $this->pageCount = $pageCount;
-        $this->results = $results;
-    }
 }

@@ -129,12 +129,13 @@ final class BubbleHearthClient
      * @param  string  $uri target Game Data API URI.
      * @param  string  $type target type to deserialize into.
      * @param  array<string, string|int>|null  $query optional query parameters.
+     * @param  bool  $includeLocale flag for indicating if the locale should be included in the query parameters, defaults to true.
      *
      * @throws GuzzleException
      */
-    public function sendAndDeserialize(string $uri, string $type, ?array $query = null): mixed
+    public function sendAndDeserialize(string $uri, string $type, ?array $query = null, bool $includeLocale = true): mixed
     {
-        $response = self::sendRequest($uri, $query);
+        $response = self::sendRequest($uri, $query, $includeLocale);
         $body = $response->getBody()->getContents();
 
         return $this->serializer->deserialize($body, $type, 'json');
@@ -144,14 +145,16 @@ final class BubbleHearthClient
      * Sends a request to Blizzard, used by all child client connectors.
      * Requests can include optional query parameters in which, if they
      * are included, will be merged with the default locale included on
-     * each request.
+     * each request. Internally, we'll point to the correct subdomain
+     * based on the account region, so adapters need only to pass the endpoint.
      *
      * @param  string  $uri target Game Data API URI.
      * @param  array<string, string|int>|null  $query optional query parameters.
+     * @param  bool  $includeLocale flag for indicating if the locale should be included in the query parameters, defaults to true.
      *
      * @throws GuzzleException
      */
-    public function sendRequest(string $uri, ?array $query = null): ResponseInterface
+    public function sendRequest(string $uri, ?array $query = null, bool $includeLocale = true): ResponseInterface
     {
         $token = self::getAccessToken();
         $region = $this->accountRegion->value;
@@ -162,9 +165,10 @@ final class BubbleHearthClient
             ],
         ];
 
-        $queryParams = [
-            'locale' => $this->locale->value,
-        ];
+        $queryParams = $includeLocale ?
+            [
+                'locale' => $this->locale->value,
+            ] : [];
 
         if (isset($query)) {
             $queryParams = array_merge($queryParams, $query);
