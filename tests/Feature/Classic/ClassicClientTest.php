@@ -7,7 +7,9 @@ namespace Feature;
 use Bubblehearth\Bubblehearth\AccountRegion;
 use Bubblehearth\Bubblehearth\BubbleHearthClient;
 use Bubblehearth\Bubblehearth\Classic\Realms\Realm;
+use Bubblehearth\Bubblehearth\Classic\Realms\RealmRegion;
 use Bubblehearth\Bubblehearth\Classic\Realms\RealmSearchItemResult;
+use Bubblehearth\Bubblehearth\Classic\Realms\RealmType;
 use Bubblehearth\Bubblehearth\Locale;
 
 describe('realms', function () {
@@ -46,6 +48,12 @@ describe('realms', function () {
             ->realms()
             ->getRealm('grobbulus');
 
+        /** @var RealmRegion $realmRegion */
+        $realmRegion = $realm->region;
+
+        /** @var RealmType $realmType */
+        $realmType = $realm->type;
+
         // Assert
         expect($realm)->not->toBeNull()
             ->and($realm->id)->toBeGreaterThan(0)
@@ -55,8 +63,9 @@ describe('realms', function () {
             ->and($realm->links?->key?->href)->not()->toBeNull()
             ->and($realm->region)->not->toBeNull()
             ->and($realm->region?->name)->not->toBeNull()
-            ->and($realm->region?->id)->not->toBeNull()
-            ->and($realm->region?->key)->not->toBeNull()
+            ->and($realm->region?->name)->not->toBeNull()
+            ->and($realmRegion->id)->not->toBeNull()
+            ->and($realmRegion->key)->not->toBeNull()
             ->and($realm->region?->key?->href)->not->toBeNull()
             ->and($realm->connectedRealm)->not->toBeNull()
             ->and($realm->slug)->toBe('grobbulus')
@@ -64,8 +73,8 @@ describe('realms', function () {
             ->and($realm->category)->toBe('US West')
             ->and($realm->timezone)->toBe('America/Los_Angeles')
             ->and($realm->type)->not()->toBeNull()
-            ->and($realm->type?->type)->not()->toBeNull()
-            ->and($realm->type?->name)->not()->toBeNull()
+            ->and($realmType->type)->not()->toBeNull()
+            ->and($realmType->name)->not()->toBeNull()
             ->and($realm->isTournament)->not()->toBeNull()
             ->and($realm->isTournament)->toBe(false);
     });
