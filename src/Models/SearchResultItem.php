@@ -6,6 +6,8 @@ namespace Bubblehearth\Bubblehearth\Models;
 
 /**
  * A generic search result item containing both key and the relevant search data.
+ *
+ * @template T search result data type.
  */
 class SearchResultItem
 {

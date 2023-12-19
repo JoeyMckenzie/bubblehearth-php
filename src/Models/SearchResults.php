@@ -6,6 +6,8 @@ namespace Bubblehearth\Bubblehearth\Models;
 
 /**
  * A generic search result class for search endpoints and APIs.
+ *
+ * @template T search result data type.
  */
 class SearchResults
 {

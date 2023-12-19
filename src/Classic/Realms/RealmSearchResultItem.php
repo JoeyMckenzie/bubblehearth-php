@@ -6,10 +6,13 @@ namespace Bubblehearth\Bubblehearth\Classic\Realms;
 
 use Bubblehearth\Bubblehearth\Models\SearchResultItem;
 
-class RealmSearchItemResult extends SearchResultItem
+/**
+ * @extends SearchResultItem<Realm>
+ */
+final class RealmSearchResultItem extends SearchResultItem
 {
     /**
-     * @var Realm data returned from the search.
+     * @var Realm realm search result.
      */
     public Realm $data;
 }

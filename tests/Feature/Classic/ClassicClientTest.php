@@ -8,7 +8,7 @@ use Bubblehearth\Bubblehearth\AccountRegion;
 use Bubblehearth\Bubblehearth\BubbleHearthClient;
 use Bubblehearth\Bubblehearth\Classic\Realms\Realm;
 use Bubblehearth\Bubblehearth\Classic\Realms\RealmRegion;
-use Bubblehearth\Bubblehearth\Classic\Realms\RealmSearchItemResult;
+use Bubblehearth\Bubblehearth\Classic\Realms\RealmSearchResultItem;
 use Bubblehearth\Bubblehearth\Classic\Realms\RealmType;
 use Bubblehearth\Bubblehearth\Locale;
 
@@ -98,7 +98,7 @@ describe('realms', function () {
             ->and($realms->maxPageSize)->toBe(100)
             ->and($realms->pageCount)->toBe(1);
         collect($realms->results)
-            ->each(fn (RealmSearchItemResult $searchResult) => expect($searchResult)->not()->toBeNull()
+            ->each(fn (RealmSearchResultItem $searchResult) => expect($searchResult)->not()->toBeNull()
                 ->and($searchResult->data)->not()->toBeNull()
                 ->and($searchResult->data->isTournament)->not()->toBeNull()
                 ->and($searchResult->data->timezone)->not()->toBeNull()

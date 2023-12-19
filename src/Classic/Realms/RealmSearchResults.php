@@ -6,10 +6,13 @@ namespace Bubblehearth\Bubblehearth\Classic\Realms;
 
 use Bubblehearth\Bubblehearth\Models\SearchResults;
 
+/**
+ * @extends SearchResults<Realm>
+ */
 final class RealmSearchResults extends SearchResults
 {
     /**
-     * @var RealmSearchItemResult[] search results generic over a type.
+     * @var RealmSearchResultItem[] realm search result containing the document key.
      */
     public array $results;
 }
