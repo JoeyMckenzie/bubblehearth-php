@@ -20,6 +20,11 @@ enum Timezone: string
     case AmericaNewYork = 'America/New_York';
 
     /**
+     * Represents the Australian timezone.
+     */
+    case AustraliaMelbourne = 'Australia/Melbourne';
+
+    /**
      * Represents an unknown, detected when the provided timezone is not able to be parsed.
      */
     case Unknown = 'Unknown';

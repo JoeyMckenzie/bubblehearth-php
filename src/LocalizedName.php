@@ -7,15 +7,15 @@ namespace Bubblehearth\Bubblehearth;
 /**
  * Name localities for a specific item.
  */
-final readonly class LocalizedName
+final class LocalizedName
 {
     /**
      * @var LocalizedItem container property for the various localities.
      */
     public LocalizedItem $name;
 
-    public function __construct(LocalizedItem $name)
-    {
-        $this->name = $name;
-    }
+    /**
+     * @var string|null type associated with the name.
+     */
+    public ?string $type;
 }

@@ -8,8 +8,12 @@ use Bubblehearth\Bubblehearth\AccountRegion;
 use Bubblehearth\Bubblehearth\BubbleHearthClient;
 use Bubblehearth\Bubblehearth\Classic\Realms\Realm;
 use Bubblehearth\Bubblehearth\Classic\Realms\RealmRegion;
+use Bubblehearth\Bubblehearth\Classic\Realms\RealmSearchResultItem;
 use Bubblehearth\Bubblehearth\Classic\Realms\RealmType;
 use Bubblehearth\Bubblehearth\Locale;
+use Bubblehearth\Bubblehearth\LocalizedItem;
+use Bubblehearth\Bubblehearth\LocalizedName;
+use Bubblehearth\Bubblehearth\Timezone;
 
 describe('realms', function () {
     test('returns a list of realms from the index endpoint', function () {
@@ -70,7 +74,7 @@ describe('realms', function () {
             ->and($realm->slug)->toBe('grobbulus')
             ->and($realm->name)->toBe('Grobbulus')
             ->and($realm->category)->toBe('US West')
-            ->and($realm->timezone)->toBe('America/Los_Angeles')
+            ->and($realm->timezone)->toBe(Timezone::AmericaLosAngeles)
             ->and($realm->type)->not()->toBeNull()
             ->and($realmType->type)->not()->toBeNull()
             ->and($realmType->name)->not()->toBeNull()
@@ -96,15 +100,18 @@ describe('realms', function () {
             ->and($realms->pageSize)->toBe(27)
             ->and($realms->maxPageSize)->toBe(100)
             ->and($realms->pageCount)->toBe(1);
-
-        foreach ($realms->results as $result) {
-            /** @var Realm $realm */
-            $realm = $result->data;
-            expect($realm)->not()->toBeNull()
-                ->and($result->isTournament)->not()->toBeNull()
-                ->and($result->timezone)->not()->toBeNull()
-                ->and($result->name)->not()->toBeNull();
-        }
+        collect($realms->results)
+            ->each(fn (RealmSearchResultItem $realm) => expect($realm)->not()->toBeNull()
+                ->and($realm->data)->not()->toBeNull()
+                ->and($realm->data->id)->toBeGreaterThan(0)
+                ->and($realm->data->isTournament)->toBeBool()
+                ->and($realm->data->timezone)->toBeInstanceOf(Timezone::class)
+                ->and($realm->data->slug)->toBeString()
+                ->and($realm->data->name)->toBeInstanceOf(LocalizedItem::class)
+                ->and($realm->data->region)->toBeInstanceOf(LocalizedName::class)
+                ->and($realm->data->category)->toBeInstanceOf(LocalizedItem::class)
+                ->and($realm->data->type)->toBeInstanceOf(LocalizedName::class)
+                ->and($realm->data->locale)->toBeString());
     });
 
     test('returns paginated results for a realm search when query parameters are provided', function () {
@@ -117,10 +124,25 @@ describe('realms', function () {
         $realms = $client
             ->classic()
             ->realms()
-            ->searchRealms(page: 2);
+            ->searchRealms(timezone: Timezone::AmericaLosAngeles);
 
         // Assert
         expect($realms)->not->toBeNull()
-            ->and($realms->results)->toBeGreaterThan(10);
+            ->and($realms->page)->toBe(1)
+            ->and($realms->pageSize)->toBe(11)
+            ->and($realms->maxPageSize)->toBe(100)
+            ->and($realms->pageCount)->toBe(1);
+        collect($realms->results)
+            ->each(fn (RealmSearchResultItem $realm) => expect($realm)->not()->toBeNull()
+                ->and($realm->data)->not()->toBeNull()
+                ->and($realm->data->id)->toBeGreaterThan(0)
+                ->and($realm->data->isTournament)->toBeBool()
+                ->and($realm->data->timezone)->toBe(Timezone::AmericaLosAngeles)
+                ->and($realm->data->slug)->toBeString()
+                ->and($realm->data->name)->toBeInstanceOf(LocalizedItem::class)
+                ->and($realm->data->region)->toBeInstanceOf(LocalizedName::class)
+                ->and($realm->data->category)->toBeInstanceOf(LocalizedItem::class)
+                ->and($realm->data->type)->toBeInstanceOf(LocalizedName::class)
+                ->and($realm->data->locale)->toBeString());
     });
 });

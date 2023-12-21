@@ -20,6 +20,7 @@ use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
+use Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -111,9 +112,13 @@ final class BubbleHearthClient
             new PhpStanExtractor(),
         ]);
 
-        $normalizer = new ObjectNormalizer($classMetadataFactory, $metadataAwareNameConverter, null);
+        $normalizers = [
+            new BackedEnumNormalizer(),
+            new ObjectNormalizer($classMetadataFactory, $metadataAwareNameConverter, null, $extractor),
+            new ArrayDenormalizer(),
+        ];
 
-        return new Serializer([$normalizer, new ArrayDenormalizer()], ['json' => new JsonEncoder()]);
+        return new Serializer($normalizers, ['json' => new JsonEncoder()]);
     }
 
     /**

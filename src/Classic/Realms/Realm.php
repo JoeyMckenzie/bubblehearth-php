@@ -50,30 +50,30 @@ final class Realm
     /**
      * @var RealmRegion|LocalizedName|null realm region, including document links.
      */
-    public RealmRegion|LocalizedName|null $region = null;
+    public RealmRegion|LocalizedName|null $region;
 
     /**
      * @var bool|null optional flag representing if the realm is a PVP tournament realm.
      */
-    public ?bool $isTournament = null;
+    public ?bool $isTournament;
 
     /**
-     * @var string|null optional timezone.
+     * @var Timezone|null optional timezone.
      */
-    public ?string $timezone = null;
+    public ?Timezone $timezone;
 
     /**
-     * @var RealmType|LocalizedItem|null optional realm type.
+     * @var RealmType|LocalizedName|null optional realm type.
      */
-    public RealmType|LocalizedItem|null $type = null;
+    public RealmType|LocalizedName|null $type = null;
 
     /**
      * @var ?DocumentKey key to mega server this realm is connected to.
      */
     public ?DocumentKey $connectedRealm;
 
-    public function getConvertedTimezone(): ?Timezone
-    {
-        return Timezone::tryFrom($this->timezone ?? '');
-    }
+    /**
+     * @var ?string primary locale used for the realm.
+     */
+    public ?string $locale;
 }
