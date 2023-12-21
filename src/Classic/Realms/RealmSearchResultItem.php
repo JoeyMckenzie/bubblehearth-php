@@ -11,8 +11,4 @@ use Bubblehearth\Bubblehearth\Models\SearchResultItem;
  */
 final class RealmSearchResultItem extends SearchResultItem
 {
-    /**
-     * @var Realm realm search result.
-     */
-    public Realm $data;
 }

@@ -11,6 +11,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
+use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -107,10 +108,12 @@ final class BubbleHearthClient
         $extractor = new PropertyInfoExtractor([], [
             new PhpDocExtractor(),
             new ReflectionExtractor(),
+            new PhpStanExtractor(),
         ]);
-        $normalizer = new ObjectNormalizer($classMetadataFactory, $metadataAwareNameConverter, null, $extractor);
 
-        return new Serializer([$normalizer, new ArrayDenormalizer()], [new JsonEncoder()]);
+        $normalizer = new ObjectNormalizer($classMetadataFactory, $metadataAwareNameConverter, null);
+
+        return new Serializer([$normalizer, new ArrayDenormalizer()], ['json' => new JsonEncoder()]);
     }
 
     /**
@@ -125,18 +128,40 @@ final class BubbleHearthClient
      * Sends a request to Blizzard and attempts to
      * deserialize the response into the target type.
      *
-     *
      * @param  string  $uri target Game Data API URI.
      * @param  string  $type target type to deserialize into.
+     * @param  string|null  $typeMapping assumes a generic search result model type.
      * @param  array<string, string|int>|null  $query optional query parameters.
      * @param  bool  $includeLocale flag for indicating if the locale should be included in the query parameters, defaults to true.
      *
      * @throws GuzzleException
      */
-    public function sendAndDeserialize(string $uri, string $type, ?array $query = null, bool $includeLocale = true): mixed
+    public function sendAndDeserialize(string $uri, string $type, ?string $typeMapping = null, ?array $query = null, bool $includeLocale = true): mixed
     {
         $response = self::sendRequest($uri, $query, $includeLocale);
         $body = $response->getBody()->getContents();
+
+        // Okay... this feels stupid but seems to be the only solution
+        // to generic serialization with Syfmfony. We need to manually
+        // append the $typeMapping property to the generic search result
+        // model AND the search result item types. Then, we'll encode it
+        // back to JSON so Symfony can use the discriminator class mapping
+        // to make the determination of which instances of the search result
+        // class to deserialize to. There's gotta be a better way, this'll do for now
+        if (isset($typeMapping)) {
+            $data = json_decode($body, true);
+
+            // @phpstan-ignore-next-line
+            $data['type'] = $typeMapping;
+
+            // @phpstan-ignore-next-line
+            foreach ($data['results'] as &$result) {
+                // @phpstan-ignore-next-line
+                $result['type'] = $typeMapping;
+            }
+
+            $body = json_encode($data);
+        }
 
         return $this->serializer->deserialize($body, $type, 'json');
     }

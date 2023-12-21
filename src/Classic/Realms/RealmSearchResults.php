@@ -11,8 +11,4 @@ use Bubblehearth\Bubblehearth\Models\SearchResults;
  */
 final class RealmSearchResults extends SearchResults
 {
-    /**
-     * @var RealmSearchResultItem[] realm search result containing the document key.
-     */
-    public array $results;
 }
