@@ -40,7 +40,7 @@ abstract class GenericSearchResults
     public int $pageCount;
 
     /**
-     * @var SearchResultItem<T>[] a generic search result item containing the model specific search data.
+     * @var GenericSearchResultItem<T>[] a generic search result item containing the model specific search data.
      */
     public array $results;
 }
