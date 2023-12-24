@@ -21,6 +21,11 @@ final class Region
     public int $id;
 
     /**
+     * @var string|null optionally included link to the region.
+     */
+    public ?string $href;
+
+    /**
      * @var string Localized name of the region.
      */
     public string $name;

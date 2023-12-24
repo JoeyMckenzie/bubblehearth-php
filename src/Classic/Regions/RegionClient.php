@@ -10,7 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 /**
  * A client connector for searching regions for World of Warcraft Classic.
  */
-final class RegionClient
+final readonly class RegionClient
 {
     public function __construct(private BubbleHearthClient $internalClient)
     {

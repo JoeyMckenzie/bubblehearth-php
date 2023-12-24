@@ -26,6 +26,8 @@ describe('regions', function () {
         expect($regions)->not->toBeNull()
             ->and($regions->links)->not->toBeNull();
         collect($regions->regions)->each(fn (Region $region) => expect($region)
-            ->not()->toBeNull());
+            ->not()->toBeNull()
+            ->and($region->href)->not()->toBeNull()
+            ->and($region->href)->not()->toBeEmpty());
     });
 });
