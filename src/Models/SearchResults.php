@@ -7,7 +7,7 @@ namespace Bubblehearth\Bubblehearth\Models;
 /**
  * A generic search result class for search endpoints and APIs.
  */
-class SearchResults
+abstract class SearchResults
 {
     /**
      * @var int current page of the search results.
