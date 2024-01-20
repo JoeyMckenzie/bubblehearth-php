@@ -1,6 +1,6 @@
 # BubbleHearth
 
-![BubbleHearth Logo](https://your-library-logo-url.png)
+PHP bindings for Blizzard's [Game Data APIs](https://develop.battle.net/documentation/world-of-warcraft/game-data-apis)!
 
 [![CI](https://github.com/JoeyMckenzie/bubblehearth-php/actions/workflows/ci.yml/badge.svg)](https://github.com/JoeyMckenzie/bubblehearth-php/actions/workflows/ci.yml)
 
@@ -22,7 +22,7 @@ integrate Blizzard game data into their PHP applications.
 Install the BubbleHearth PHP Library using Composer:
 
 ```bash
-composer require your-vendor/bubble-hearth-php-library
+composer require bubblehearth/bubblearth
 ```
 
 ## Usage
@@ -30,46 +30,20 @@ composer require your-vendor/bubble-hearth-php-library
 ```php
 <?php
 
-use YourVendor\BubbleHearth\BubbleHearth;
+use BubbleHearth\BubbleHearth;
 
 // Initialize the library with your Blizzard API credentials
-$bubbleHearth = new BubbleHearth('YOUR_CLIENT_ID', 'YOUR_CLIENT_SECRET');
+$clientId = (string) getenv('CLIENT_ID');
+$clientSecret = (string) getenv('CLIENT_SECRET');
+$client = new BubbleHearthClient($clientId, $clientSecret, AccountRegion::US, Locale::EnglishUS);
 
-// Get World of Warcraft character data
-$characterData = $bubbleHearth->getCharacterData('us', 'realm', 'characterName');
-
-// Display character data
-print_r($characterData);
+// Get World of Warcraft Classic realm data
+$regions = $client
+    ->classic()
+    ->regions()
+    ->getRegionIndex();
+    
+var_dump($characterData);
 
 ?>
 ```
-
-## Documentation
-
-For detailed documentation on using the BubbleHearth PHP Library and available methods, refer to
-the [Wiki](https://github.com/your-vendor/bubble-hearth-php-library/wiki).
-
-## Examples
-
-Explore the `examples` directory for sample usage scenarios and code snippets.
-
-## Contributing
-
-Contributions are welcome! Please read our [contribution guidelines](CONTRIBUTING.md) before submitting pull requests.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Special thanks to Blizzard for providing the awesome Game Data APIs.
-
-## Contact
-
-For issues or questions, please open an [issue](https://github.com/your-vendor/bubble-hearth-php-library/issues).
-
----
-
-Replace `'YOUR_CLIENT_ID'` and `'YOUR_CLIENT_SECRET'` with your actual Blizzard API credentials. Also, update the logo
-URL, Wiki link, and other details as needed.
