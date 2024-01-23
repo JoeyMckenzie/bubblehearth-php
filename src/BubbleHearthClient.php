@@ -133,11 +133,11 @@ final class BubbleHearthClient
      * Sends a request to Blizzard and attempts to
      * deserialize the response into the target type.
      *
-     * @param  string  $uri target Game Data API URI.
-     * @param  string  $type target type to deserialize into.
-     * @param  string|null  $typeMapping assumes a generic search result model type.
-     * @param  array<string, string|int>|null  $query optional query parameters.
-     * @param  bool  $includeLocale flag for indicating if the locale should be included in the query parameters, defaults to true.
+     * @param  string  $uri  target Game Data API URI.
+     * @param  string  $type  target type to deserialize into.
+     * @param  string|null  $typeMapping  assumes a generic search result model type.
+     * @param  array<string, string|int>|null  $query  optional query parameters.
+     * @param  bool  $includeLocale  flag for indicating if the locale should be included in the query parameters, defaults to true.
      *
      * @throws GuzzleException
      */
@@ -178,9 +178,9 @@ final class BubbleHearthClient
      * each request. Internally, we'll point to the correct subdomain
      * based on the account region, so adapters need only to pass the endpoint.
      *
-     * @param  string  $uri target Game Data API URI.
-     * @param  array<string, string|int>|null  $query optional query parameters.
-     * @param  bool  $includeLocale flag for indicating if the locale should be included in the query parameters, defaults to true.
+     * @param  string  $uri  target Game Data API URI.
+     * @param  array<string, string|int>|null  $query  optional query parameters.
+     * @param  bool  $includeLocale  flag for indicating if the locale should be included in the query parameters, defaults to true.
      *
      * @throws GuzzleException
      */

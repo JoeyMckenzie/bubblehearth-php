@@ -35,7 +35,7 @@ final readonly class RealmClient
     /**
      * Retrieves a realm given the slugified version of the name.
      *
-     * @param  string  $realmSlug realm slug based on the name.
+     * @param  string  $realmSlug  realm slug based on the name.
      *
      * @throws GuzzleException
      */
@@ -52,8 +52,8 @@ final readonly class RealmClient
     /**
      * Searches for realms with optionally provided query parameters.
      *
-     * @param  Timezone|null  $timezone timezone of the realm.
-     * @param  string  $orderBy field to sort the result set by.
+     * @param  Timezone|null  $timezone  timezone of the realm.
+     * @param  string  $orderBy  field to sort the result set by.
      * @return RealmSearchResults realms from the search.
      *
      * @throws GuzzleException
